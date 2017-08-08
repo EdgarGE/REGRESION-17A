@@ -1,0 +1,30 @@
+#Variable de cuatro entradas 
+#facultad (economia, arquitectura, ingenieria, derecho)
+#licenciatura (actuaria, arquitectura, ing. civil, derecho) 
+#calificacion de alumnos (6, 4, 10, 8)
+# verificar con R que tipo de variables son
+# borrar las variables facultad y licenciatura
+#graficar la variable calificacion (pie)
+
+Fac<- c("Economia", "Arquitectura", "Ingenieria", "Derecho")
+Lic<- c("Actuaria", "Arquitectura", "Ing. Civil", "Derecho")
+Cal<- c(6,4,10,8)
+dbase<- data.frame(Fac, Lic, Cal)
+View (dbase)
+class(Fac)
+class(Lic)
+class(Cal)
+rm(Fac)
+rm(Lic)
+
+etiq <- c("actuaria","arquitectura","ing. Civil","derecho")
+help("pie")
+
+pie(Cal)
+pie(Cal, etiq)
+
+pie(Cal, etiq, main = 
+      "Grafica 1
+  Calificaciones alumnos",
+    sub ="Fuente",
+    col=c("deepskyblue1","green","hotpink","goldenrod"), radius=1.3,clockwise=TRUE, lty = 5)
