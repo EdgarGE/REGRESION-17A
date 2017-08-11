@@ -1,0 +1,76 @@
+####### 11-Agosto-2017 #######
+
+###PARA AGREGAR UN GRUPO MAS A LA MATRIZ mr (cbind: columna, rbind: fila) PEGAR UN RENGLON
+mr <- rbind(mr, c(4,5,6,7))
+View(mr)
+rownames(mr) <- c("Escuela 1", "Escuela 2", "Escuela 3", "Escuela 4", "Escuela 5", "Escuela 6")
+mr <- cbind(mr, c(14,25,36,47,99,81))
+colnames(mr) <-  c("Toluca", "Pachuca", "Guadalajara", "Monterrey", "Guanajuato")
+
+###EDITAR UN DATO EN ESPECIFICO DE LA MATRIZ
+#opt1
+mr ["Escuela 1", "Guanajuato"] <- 28
+#op2 (aparece un recuadro y se edita)
+edit(mr)
+
+
+### para multiplicar matrices (%*%)
+mr%*%mr1
+
+### para la transpuesta de una matriz
+t(mr)
+
+### Generar vectores
+nom <- c("Sergio", "Juan", "Rosario", "Jessica")
+edad <- c(30, 43, 21, 18)
+altura <- c(170, 165, 175, 172)
+salario <- c(3000, 4500, 2200, 4300)
+base1 <- data.frame(nom, edad, altura, salario)
+View(base1)
+
+base1 [4,3] <- 178
+
+### Multiplicar salario x 
+# asignar una ruta dedondeproviene$queseusara
+base1$salario * 2.2 -> base1$salario
+base1
+### pegar una variable
+peso <- c(83.2, 75.2, 69.3, 70.5) #nuevo vector
+base1 <- data.frame(nom, edad, altura, salario, peso)
+
+base1$peso * 1.2 -> base1$peso
+base1
+### round(que deseo redondear(ruta), a cuantos decimales debeo redondear)
+round (base1$peso,3)
+
+### Pegar nueva columna a la base de datos (ruta$nombredecolumna)
+base1$escol <- c("Prepa", "Licenciatura", "Ninguna", "Primaria")
+base1
+
+base1$sex <- c(1,1,2,2)
+base1
+
+###Sacar una tabla con la variable sexo (table(ruta_base$variable))
+table(base1$sex)
+
+### Con la funcion "attach(x)" <- apartir de cierta linea (donde este attach) 
+### todo lo que mande a llamar sera de la base x
+### Con la funcion "detach(x)" <- apartir de cierta linea (donde este detach)
+### todo lo que mande a llamar sera de cualquier base
+
+### Una paqueteria permite generar analisis estadisticos
+# 1) instalar paqueterias desde internet: una vez instalada si se requiere volver a usar
+# solo se manda a llamar con "library(foreign)"
+#foreign: importar o exporta bases de datos
+#car: regresion
+#questionr: es para expandir frecuencias de bases de datos muestrales
+install.packages("foreign")
+install.packages("questionr")
+install.packages("car")
+
+# 2) Instalar en conjunto y volver a mandar a llamar la paqueteria con funcion
+# "require(foreign)" equivalente con "library(foreign)"
+install.packages(c("foreign", "questionr", "car"))
+
+##para verificar si cargo se pone
+library(foreign)
