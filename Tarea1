@@ -1,0 +1,17 @@
+#### TAREA1 #####
+
+###1)
+mr <- 11:30
+length(mr)
+dim(mr) <- c(5,4)
+colnames(mr) <-  c("Toluca", "Pachuca", "Guadalajara", "Monterrey")
+rownames(mr) <- c("Escuela 1", "Escuela 2", "Escuela 3", "Escuela 4", "Escuela 5")
+View(mr)
+mr["Escuela 3", "Toluca"]
+mr["Escuela 5", "Guadalajara"]
+mr["Escuela 1", "Pachuca"]
+
+###2)
+mr1 <- matrix(1:18, nrow=6, ncol=3)
+View(mr1)
+mr1[3,3]
