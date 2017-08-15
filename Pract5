@@ -1,0 +1,33 @@
+#### importar bases de datos 
+require (foreign)
+mti2015 <- read.dbf ("C:/Users/salaD-20/Desktop/mti2015_05_17_sdem_precodificado.DBF")
+table (mti2015$SEX)
+install.packages ("questionr")
+install.packages ("questionr")
+require (questionr)
+### DATOS EXPANDIDOS  (wtd.table(ruta , weights = )) weights=valor ponderado
+#(SE UTILIZA MUESTREO, EJEMPLO: ES DECIR SI DE 1=MUJERES HAY 52 CASOS, ESOS CASOS REPRESENTAN A 1000 DATOS REALES)
+wtd.table(mti2015$SEX, weights = mti2015$FAC_MTI)
+ls (mti2015)
+sum(mti2015$FAC_MTI)
+table(mti2015$R_DEF_ENOE)
+table(mti2015$CS_P12)
+wtd.table(mti2015$CS_P12, weights = mti2015$FAC_MTI)
+### CRUZAR VARIABLES (solo se pueden cruzar dos variables)
+#### wtd.table(ruta1(variable1) renglones , ruta2(variable2) columnas, weights = )
+wtd.table(mti2015$EDA, mti2015$CS_P12, weights = mti2015$FAC_MTI )
+
+### FILTRAR BASES (subset(base x, ruta == numero) ) Crea un subconjunto de un universo o base x
+#Solo requiero la base del Edo. de Mexico
+edomex <- subset(mti2015, mti2015$ENT == 15)
+##OP1(MUJERES DEL ESTADO DE MEXICO)
+table (edomex$SEX)
+##OP2 (MUJERES DEL ESTADO DE MEXICO)
+edomexmuj <- subset(edomex, edomex$SEX == 2)
+# (aguascalientes y zacatecas)("01" ES EN COMILLAS PORQUE ES VARIABLE DE TIPO CARACTER)
+edomexwom <- subset(mti2015, mti2015$ENT == "01" | mti2015$ENT == 32)
+table(edomexwom$ENT)
+# CONVERTIR VARIABLE CARACTER A NUMERICA (as.numeric)
+as.numeric(mti2015$ENT) 
+class(mti2015$ENT)
+#### tarea convertir la variable factor y caracter a numerico.####
