@@ -1,0 +1,15 @@
+#### TAREA ####
+# CONVERTIR VARIABLE CARACTER A NUMERICA 
+#mti2015$ENT = Variable tipo Caracter 
+as.numeric(mti2015$ENT)   # de V. Caracter se convierte a variable Factor
+class(mti2015$ENT)
+as.numeric(as.character(mti2015$ENT)) # De V. Factor se convierte a Numerica.
+
+###############Ejemplo:
+#### tarea convertir una variable factor y caracter a numerico.####
+chr <- "01" #Variable tipo Character
+class(chr)
+chr1 <- factor(chr) #De character a Factor
+class(chr1)
+chr2 <- as.numeric(as.character(chr1)) # Finalmente de Factor a Numerico 
+class(chr2)
