@@ -1,0 +1,80 @@
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/modulos/mti/2015/microdatos/mti2015_bases_conapo_dbf.zip",temporal)
+files = unzip (temporal, list=TRUE) $Name
+unzip(temporal, files=files[grepl("dbf", files)])
+require (foreign)
+files
+mti15 <- data.frame (read.dbf("mti2015_05_17_sdem_precodificado.DBF"))
+class (mti15$ENT)
+mti15$ENT <- as.numeric(mti15$ENT)
+class (mti15$ENT)
+View(mti15)
+
+mti15$RAMA2 [mti15$RAMA ==1] <-1
+mti15$RAMA2 [mti15$RAMA ==2 | mti15$RAMA ==3] <-2
+mti15$RAMA2 [mti15$RAMA ==4 | mti15$RAMA ==5] <-3
+mti15$RAMA2 [mti15$RAMA ==6 | mti15$RAMA ==7] <-4
+table (mti15$RAMA2)
+###Ejercicio:recodificar la variable EDA en una nueva variable que se llame GPOEDA
+## y etiquetarla, la recodificacion debe quedar en 4 lineas de script, la recodificacion es:
+## 5,6,7 ->1<-niñ@s, 8,9,10,11 ->2<-pre ado, 12,13,14->3<-ado, 15,16,17->4<-joven
+## una vez que hayan realizado el ejercicio generar una tabla con datos expandidos y 
+##exportarla a excel
+mti15$GPOEDAD [mti15$EDA =="05" | mti15$EDA =="06" | mti15$EDA =="07"] <-1
+mti15$GPOEDAD [mti15$EDA =="08" | mti15$EDA =="09" | mti15$EDA ==10 | mti15$EDA ==11] <-2
+mti15$GPOEDAD [mti15$EDA ==12 | mti15$EDA ==13 | mti15$EDA ==14] <-3
+mti15$GPOEDAD [mti15$EDA ==15 | mti15$EDA ==16 | mti15$EDA ==17] <-4
+table (mti15$GPOEDAD)
+mti15$GPOEDAD <- factor(mti15$GPOEDAD, levels = c(1,2,3,4), labels = c("Niños(a)", "Pre ado", "ado", "Joven"))
+table (mti15$GPOEDAD)
+
+#############################################
+###             TAREA          ###
+#### EXPORTAR VARIAS TABLAS A EXCEL ####
+library(questionr)
+library(foreign)
+tab <- wtd.table(mti15$GPOEDAD, weights = mti15$FAC_MTI)
+write.csv(tab, file = "Tabla.csv")
+#install.packages("xlsx")
+#install.packages("XLConnect")
+#librowrite.xlsx(tab, file="TABLAF.xlsx",sheetName="TABLA", append=FALSE)
+#write.xlsx(tab1, file="TABLAF.xlsx", sheetName="TABLA1", append=TRUE)
+#library(WriteXLS)
+#library(xlsx)
+#require(XLConnect)
+
+### GRAFICAR LA VARIABLE EDAD ###
+
+###grafica con plot###
+
+## OP 1
+plot(mti15$GPOEDAD,cex.main=2 ,col.axis="black", col.lab="black", main = 
+       "Gráfica de Edades",
+     sub ="Fuente: INEGI.Modulo de Trabajo Infantil",
+     col=c("steelblue1","springgreen3","maroon3","indianred4"),xlab="Grupo",
+     ylab="Frecuencia",col.main ="dodgerblue2")
+
+## OP 2
+Ed <- data.frame(tab)
+View (Ed)
+help("points")
+plot(Ed$Var1, Ed$Freq, type="l", main = "Grafica de Edades", 
+     sub ="Fuente: INEGI.Modulo de Trabajo Infantil", cex.main = 2, cex.sub =1, 
+     xlab = "Grupos", ylab = "Frecuencia",axes = TRUE , pch=17, col="blue")
+
+### graficar la variable EDAD con GGplot
+install.packages("ggplot2")
+require(ggplot2)
+#aes(x = "Grupos", y = "Frecuencia")
+ggplot (data = Ed, aes(Var1, freq)) +
+geom_bar(stat = "identity",fill=c("dodgerblue", "darkred", "orangered1", "limegreen"))+  
+ggtitle("Grafica de Edades")+labs(x="Grupo", y="Frecuancia")
+theme(plot.title = element_text(family = "RAGEY",size = 15, colour = "black", face="bold", hjust=0.5))
+#geom_text(aes(y = freq, ymax = freq, label = freq), position = position_dodge(width =0.9),
+#size=3,vjust=2,hjust=0.5, col ="white")          
+View(Ed)
+  
+#labs(x= "Grupos", y= "Frecuencia")+
+#theme(axis.title.x = element_text(face = "bold", vjust = 0.5, color = "Orange", size = rel(1.5)))+
+#theme(axis.title.y = element_text(face = "bold", vjust = 0.5, color = "Orange", size = rel(1.5)))  
+
