@@ -1,0 +1,17 @@
+#### EJERCICIO CREAR UNA GRAFICA DE DISPERSION ####
+install.packages("ggplot2")
+install.packages("psych")
+library(foreign)
+library(ggplot2)
+library(psych)
+#Ancho de la Apertura del ojo
+x <- c(.40,.42,.48,.51,.57,.60,.70,.75,.75,.78)
+# Area de superficie ocular (OSA)
+y <- c(1.02,1.21,.88,.98,1.52,1.83,1.50,1.80,1.74,1.63)
+bas1 <- data.frame(x,y)
+#### SIN LINEA
+plot(bas1[,1], bas1[,2], main="Gráfica: Diagrama de Dispersión")
+abline(lm(x[,2]~y[,1]), col="blue")
+#### CON LINEA
+plot(bas1[,1], bas1[,2], main="Gráfica: Diagrama de Dispersión")
+abline(lm(bas1[,2]~bas1[,1]), col="blue")
