@@ -1,0 +1,14 @@
+                     ###########(EJERCICIO)###########
+install.packages("ggplot2")
+install.packages("psych")
+library(foreign)
+library(ggplot2)
+library(psych) 
+# Y= Bocinas pequeñas 
+# X= N. de Celulares
+#### SIN LINEA
+x <- c(1,5,10,8,2,4,1,4,9,3)
+y <- c(1,2,5,3,4,7,2,6,8,6)
+pg <- data.frame(x,y)
+plot(pg[,1], pg[,2], main="Gráfica: Diagrama de Dispersión")
+, col="blue", xlabel= "# Cel.", ylabel="# Boci.")
