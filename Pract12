@@ -1,0 +1,13 @@
+#### ejercicio en clase ##### 
+
+x <- c(2.4,3.4,4.6,3.7,2.2,3.3,4.0,2.1)
+y <- c(1.33,2.12,1.80,1.65,2,1.76,2.11,1.63)
+sumxy <- sum(x*y)
+sumx <- sum(x)
+sumy <- sum(y)
+Sxy <- sumxy - ((sumx*sumy)/length(x) )
+medx <- mean(x)
+medy <- mean(y)
+Sxx <- sum((x-medx)^2)
+syy <- sum((y-medy)^2)
+r <- Sxy / (sqrt(Sxx)*sqrt(syy))
