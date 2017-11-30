@@ -1,0 +1,112 @@
+################ 28/NOVIEMBRE/2017  #########
+
+###########################  REGRESION LOGISTICA #################
+######## Esto es para que R lea la base
+require(foreign)
+solorural <- read.spss("C:/Users/edgar 77/Documents/Actuarial2017/7Septimo/Regresion/solorural.sav")
+sr.b <- data.frame(solorural)
+
+# Encuesta Modulo de trabajo infantil del INEGI 2013
+# Niñas de 5 a 17 años de zonas rurales
+
+# Var Dep. = Persona para la que trabaja el dia (T_PER)
+#    categorias: 
+# 1.- Familiar    
+# 2.- No familiar
+# 3.- Cuenta Propia
+
+# Var Indp. = 
+# - Sexo (SEX)
+# Hombre 
+# Mujer
+# - Grupos de Edad (Edad del niño) (EDA1)
+# 5 a 9
+# 10 a 13
+# 14 a 17
+# - Jefe del Hogar (SEX_JEFE)
+# H M
+# Tamaño de Hogar (TAM_HOG)
+# 1 a 3
+# 4a 5
+# 6 a 7
+# 8 o mas
+# - Ocupacion Jefe Hogar (OCU_JEFE)
+# Ocupado desocupado
+# - Tipo de Apoyo recibido (T_APO1)
+# beca para estudiar , programa de gobierno, Ayuda familiar, Otro tipo de ayuda
+# no recibe
+
+# Categoria de refrencia es con la que se va a contrastar 
+# Categoria de referencia va ser la poscicion 1 de cada variable
+
+#### hacer una base con las 7 variables que nos interesan 
+#### Aplicar regresion logistica e interpretar los coeficientes 
+
+#######################     EJERCICIO     ######################################
+
+########################################################################################
+
+##### base de las variables que nos interesan #####
+sr.b$t_per <- as.numeric(sr.b$t_per) #Persona para la que trabaja el dia
+sr.b$sex <- as.numeric(sr.b$sex)  # Sexo del niño
+sr.b$eda1<- as.numeric(sr.b$eda1) # Edad del niño
+sr.b$sex_jefe<- as.numeric(sr.b$sex_jefe) # Sexo del jefe
+sr.b$tam_hog<- as.numeric(sr.b$tam_hog) # Tamaño de hogar
+sr.b$ocu_jefe<- as.numeric(sr.b$ocu_jefe) # Ocupacion del jefe
+sr.b$t_apo1<- as.numeric(sr.b$t_apo1) # Tipo de apoyo recibido
+#sr.b$t_per <- sr.b$t_per[sr.b$t_per<4]
+dbase <- data.frame(sr.b$t_per,sr.b$sex,sr.b$eda1,sr.b$sex_jefe,sr.b$tam_hog,sr.b$ocu_jefe,sr.b$t_apo1)
+
+### Eliminamos los valores = 4 de la variable dependente, creando una nueva base.
+dbaseb<- subset(dbase, dbase$sr.b.t_per<4)
+
+### Eliminamos los valores NA de la base anterior###
+dbasers <- na.omit(dbaseb)
+View(dbasers)
+dbasers$sr.b.t_per<- factor(dbasers$sr.b.t_per)
+table(dbasers$sr.b.t_per)
+#summary(dbasers$sr.b.sex)
+#summary(dbasers$sr.b.eda1)
+#summary(dbasers$sr.b.sex_jefe)
+#summary(dbasers$sr.b.tam_hog)
+#summary(dbasers$sr.b.ocu_jefe)
+#summary(dbasers$sr.b.t_apo1)
+
+#library(ggplot2)
+#ggplot(datos.modelo, aes(x = nivel_satisfaccion, y = ultima_evaluacion, color = abandona)) + geom_point()
+
+####### 1   (Binomial)
+
+modelo.logit <- glm(dbasers$sr.b.t_per~ dbasers$sr.b.sex+ dbasers$sr.b.eda1+dbasers$sr.b.sex_jefe+ dbasers$sr.b.tam_hog+dbasers$sr.b.ocu_jefe+ dbasers$sr.b.t_apo1,data = dbasers, family = "binomial")
+summary(modelo.logit)
+help("family")
+exp(coefficients(modelo.logit))
+
+#log.odds <- predict(modelo.logit, data.frame(nivel_satisfaccion = 0.98,ultima_evaluacion = 0.70))
+#log.odds
+
+#exp(log.odds)/(1-exp(log.odds))
+
+
+###### 2     (Multinomial)
+help("relevel")
+library(MASS)
+library (nnet)
+# Variable que se va a contrastar
+Ptrabaja  <- relevel (dbasers$sr.b.t_per, ref  =  "1" )
+modelo.logit1 <- multinom(Ptrabaja~ dbasers$sr.b.sex+ dbasers$sr.b.eda1+dbasers$sr.b.sex_jefe+ dbasers$sr.b.tam_hog+dbasers$sr.b.ocu_jefe+ dbasers$sr.b.t_apo1  , data = dbasers)
+summary(modelo.logit1)
+
+### INTERPRETACION COEFICIENTES ####
+#### Tamaño de Casa ####
+# Un aumento de una unidad en la variable tamaño del hogar(tam_hogar) se asocia con el aumento 
+# en las probabilidades de registro de trabajar con alguien ajeno a su familia
+# frente a trabajar con algun familiar  en la cantidad de .05529
+
+#### Tipo de apoyo que le dan ####
+# Un aumento de una unidad en la variable Tipo de apoyo Recibido(t_apo1) se asocia con la disminucion
+# en las probabilidades de registro de trabajar con alguien ajeno a su familia
+# frente a trabajar con algun familiar  en la cantidad de .004657
+
+#### Extraer los coeficientes
+exp ( coef (modelo.logit1))
