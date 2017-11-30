@@ -72,8 +72,7 @@ table(dbasers$sr.b.t_per)
 #summary(dbasers$sr.b.ocu_jefe)
 #summary(dbasers$sr.b.t_apo1)
 
-#library(ggplot2)
-#ggplot(datos.modelo, aes(x = nivel_satisfaccion, y = ultima_evaluacion, color = abandona)) + geom_point()
+
 
 ####### 1   (Binomial)
 
@@ -82,10 +81,6 @@ summary(modelo.logit)
 help("family")
 exp(coefficients(modelo.logit))
 
-#log.odds <- predict(modelo.logit, data.frame(nivel_satisfaccion = 0.98,ultima_evaluacion = 0.70))
-#log.odds
-
-#exp(log.odds)/(1-exp(log.odds))
 
 
 ###### 2     (Multinomial)
